@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>Clínica Veterinária - Sistema</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f7fb;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(90deg, #007bff, #00a2ff);
+        }
+        .card {
+            border: none;
+            border-radius: 1rem;
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .card i {
+            font-size: 2.3rem;
+            color: #007bff;
+            margin-bottom: .5rem;
+        }
+        footer {
+            margin-top: 60px;
+            color: #777;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold" href="index.html">🐾 Clínica Veterinária</a>
+    </div>
+</nav>
+
+<!-- CONTEÚDO -->
+<main class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-primary">Sistema de Gestão Clínica</h1>
+        <p class="text-muted">Gerencie de forma completa sua clínica veterinária: clientes, pets, consultas, exames e mais.</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <!-- CLIENTES -->
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <a href="clientes.html" class="text-decoration-none">
+                <div class="card text-center p-4 bg-white">
+                    <i class="bi bi-person-lines-fill"></i>
+                    <h5 class="fw-bold">Clientes</h5>
+                    <p class="text-muted small">Gerencie os tutores dos pets</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- PETS -->
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <a href="pacientes.html" class="text-decoration-none">
+                <div class="card text-center p-4 bg-white">
+                    <i class="bi bi-heart-fill"></i>
+                    <h5 class="fw-bold">Pets</h5>
+                    <p class="text-muted small">Cadastre e mantenha registros dos animais</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- VETERINÁRIOS -->
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <a href="veterinarios.html" class="text-decoration-none">
+                <div class="card text-center p-4 bg-white">
+                    <i class="bi bi-person-badge-fill"></i>
+                    <h5 class="fw-bold">Veterinários</h5>
+                    <p class="text-muted small">Gerencie os profissionais da clínica</p>
+                </div>
+            </a>
+        </div>
+        <!-- MEDICAMENTOS -->
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <a href="medicamentos.html" class="text-decoration-none">
+                <div class="card text-center p-4 bg-white">
+                    <i class="bi bi-prescription"></i>
+                    <h5 class="fw-bold">Medicamentos</h5>
+                    <p class="text-muted small">Gerencie o estoque e uso de medicamentos</p>
+                </div>
+            </a>
+        </div>
+        <!-- CONSULTAS -->
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <a href="consultas.html" class="text-decoration-none">
+                <div class="card text-center p-4 bg-white">
+                    <i class="bi bi-clipboard2-pulse-fill"></i>
+                    <h5 class="fw-bold">Consultas</h5>
+                    <p class="text-muted small">Agende e acompanhe as consultas</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- TRATAMENTOS -->
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <a href="tratamentos.html" class="text-decoration-none">
+                <div class="card text-center p-4 bg-white">
+                    <i class="bi bi-capsule-pill"></i>
+                    <h5 class="fw-bold">Tratamentos</h5>
+                    <p class="text-muted small">Controle medicamentos e terapias</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- EXAMES -->
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <a href="exames.html" class="text-decoration-none">
+                <div class="card text-center p-4 bg-white">
+                    <i class="bi bi-eyedropper"></i>
+                    <h5 class="fw-bold">Exames</h5>
+                    <p class="text-muted small">Gerencie exames e resultados laboratoriais</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- PRONTUÁRIOS -->
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <a href="prontuarios.html" class="text-decoration-none">
+                <div class="card text-center p-4 bg-white">
+                    <i class="bi bi-file-medical"></i>
+                    <h5 class="fw-bold">Prontuários</h5>
+                    <p class="text-muted small">Acompanhe o histórico completo de cada pet</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- RELATÓRIOS -->
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <a href="relatorios.html" class="text-decoration-none">
+                <div class="card text-center p-4 bg-white">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                    <h5 class="fw-bold">Relatórios</h5>
+                    <p class="text-muted small">Visualize estatísticas e dados agregados</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <footer class="mt-5">
+        <p>© 2025 Clínica Veterinária. Todos os direitos reservados.</p>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
