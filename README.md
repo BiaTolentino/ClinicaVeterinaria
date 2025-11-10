@@ -1,8 +1,8 @@
 # 🐾 Sistema de Gestão de Clínica Veterinária
 
-**Autores:** Ana Beatriz Santos Tolentino, 
+**Autores do projeto:** Ana Beatriz Tolentino, 
 Igor Souza Pureza, 
-João Carlos Assis,
+João Carlos Rodrigues de Assis,
 Gabriel Braulio,
 Giovanna Beatriz
 
