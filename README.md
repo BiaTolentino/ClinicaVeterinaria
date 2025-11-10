@@ -1,144 +1,180 @@
-# 🐾 Sistema de Gestão de Clínica Veterinária
+🐾 Sistema de Gestão de Clínica Veterinária
 
-**Autores do projeto:** Ana Beatriz Tolentino, 
-Igor Souza Pureza, 
-João Carlos Rodrigues de Assis,
-Gabriel Braulio,
-Giovanna Beatriz
+Autores: Ana Beatriz Tolentino, Igor Souza Pureza, João Carlos Rodrigues de Assis, Gabriel Braulio, Giovanna Beatriz
+Disciplina: Desenvolvimento de Sistemas Web
+Data: Novembro/2025
 
-**Disciplina:** Desenvolvimento de Sistemas Web  
-**Data:** Novembro/2025
+1. Descrição do Domínio Modelado
 
----
+O sistema representa o domínio de uma clínica veterinária, contendo as seguintes entidades principais:
 
-## 1. Descrição do domínio modelado
+Cliente: Tutor do animal, com dados pessoais (nome, CPF, telefone, e-mail e endereço).
 
-O sistema modela o domínio de uma clínica veterinária. As entidades principais são:
+Pet: Animal pertencente a um cliente, contendo espécie, raça e data de nascimento.
 
-- **Cliente:** Tutor do animal; contém informações pessoais (nome, CPF, telefone, e-mail, endereço).
-- **Pet:** Animal de estimação, pertencente a um cliente. Contém espécie, raça, data de nascimento.
-- **Veterinário:** Profissional que atende os pets; possui CRMV, especialidade e contato.
-- **Consulta:** Atendimento que relaciona um pet e um veterinário, com data_hora, motivo e diagnóstico.
-- **Exame:** Exames realizados em uma consulta (tipo, resultado, data).
-- **Medicamento:** Produtos farmacológicos (nome, descrição, dosagem).
-- **Tratamento:** Tabela associativa entre Consulta e Medicamento (N:N). Possui chave primária composta (id_consulta, id_medicamento) e campos adicionais (duração, observações).
-- **Prontuário:** Registro clínico de um pet. Implementado como **1:1 dependente**, ou seja, **`prontuario.id_pet` é ao mesmo tempo PK e FK para `pet.id_pet`**, garantindo dependência total.
+Veterinário: Profissional responsável pelos atendimentos, com CRMV, especialidade e informações de contato.
 
-### Justificativa das entidades
-- **Cliente** e **Pet** representam a relação natural tutor/pet.
-- **Consulta**, **Exame**, **Medicamento** e **Tratamento** modelam o fluxo clínico (consulta gera exames e pode prescrever medicamentos).
-- **Prontuário** foi modelado como entidade dependente do Pet para garantir que cada pet tenha, no máximo, um prontuário e que o prontuário não exista sem o pet — requisito da especificação.
+Consulta: Atendimento que relaciona um pet a um veterinário, contendo data/hora, motivo e diagnóstico.
 
----
+Exame: Exames associados a uma consulta (tipo, resultado, data).
 
-## 2. Diagrama lógico das entidades e relacionamentos
+Medicamento: Produtos farmacológicos cadastrados (nome, descrição e dosagem).
 
-Arquivo anexo: `diagrama_logico.png`
+Tratamento: Relação N:N entre Consulta e Medicamento. Possui chave primária composta (id_consulta, id_medicamento) e campos adicionais como duração e observações.
 
-(O diagrama mostra tabelas com PKs e FKs, e as cardinalidades: Cliente (1) -> Pet (N); Pet (1) -> Prontuário (1); Consulta (N) -> Exame (1); Consulta (N) -> Tratamento (N) <- Medicamento (N); Veterinário (1) -> Consulta (N).)
+Prontuário: Registro clínico de um pet, modelado como relação 1:1 dependente. O campo prontuario.id_pet é simultaneamente PK e FK para pet.id_pet, garantindo que o prontuário exista apenas quando houver um pet correspondente.
 
----
+Justificativa da Modelagem
 
-## 3. Descrição textual das relações e operações adicionais
+Cliente e Pet representam a relação natural tutor/animal.
 
-### Relações
-- **Cliente (1) → Pet (N)**
-    - `pet.id_cliente` é FK para `cliente.id_cliente`.
-- **Pet (1) → Prontuário (1)**
-    - `prontuario.id_pet` é PK e FK para `pet.id_pet` (dependência total).
-- **Veterinário (1) → Consulta (N)**
-    - `consulta.id_vet` é FK para `veterinario.id_vet`.
-- **Pet (1) → Consulta (N)**
-    - `consulta.id_pet` é FK para `pet.id_pet`.
-- **Consulta (1) → Exame (N)**
-    - `exame.id_consulta` é FK para `consulta.id_consulta`.
-- **Consulta (N) ↔ Medicamento (N)** via **Tratamento**
-    - `tratamento(id_consulta, id_medicamento)` com PK composta e FKs para `consulta` e `medicamento`.
+Consulta, Exame, Medicamento e Tratamento descrevem o fluxo clínico (consultas podem gerar exames e prescrever medicamentos).
 
-### Regras de negócio e operações adicionais
-- Ao excluir um **pet**, o **prontuário** associado é removido em cascata (ON DELETE CASCADE) — coerente com dependência total.
-- Ao excluir um **medicamento**, os tratamentos que o referenciam também são removidos (ON DELETE CASCADE).
-- Validações básicas devem existir na camada de serviço/controlador:
-    - Não permitir criação de `prontuario` para um `pet` inexistente.
-    - Garantir que `petId` enviado em criação/atualização do prontuário se refere ao mesmo `id` do recurso (coerência).
-    - Evitar duplicidade de `prontuario` por `pet` (PK garante isso).
-- Operações adicionais recomendadas:
-    - Endpoint para buscar prontuário por `petId`.
-    - Endpoint com filtro por tutor ou nome do pet.
-    - Relatórios agregados (nº de consultas por veterinário em período).
+O Prontuário foi modelado como entidade dependente para assegurar que cada pet possua, no máximo, um prontuário, e que o registro não exista sem o pet — conforme exigido na especificação.
 
----
+2. Diagrama Lógico de Entidades e Relacionamentos
 
-## 4. Endpoints e exemplos de uso (API REST)
+Arquivo anexo: diagrama_logico.png
 
-Base: `http://localhost:8080/api`
+(O diagrama apresenta tabelas, chaves primárias/estrangeiras e cardinalidades: Cliente (1) → Pet (N); Pet (1) → Prontuário (1); Consulta (N) → Exame (1); Consulta (N) → Tratamento (N) ← Medicamento (N); Veterinário (1) → Consulta (N).)
 
-### Pets
-- `GET /api/pets` — lista todos os pets.
-- `GET /api/pets/{id}` — obtém pet por id.
-- `POST /api/pets`
-```
+3. Descrição Textual das Relações e Operações Adicionais
+   Relações
+
+Cliente (1) → Pet (N)
+
+pet.id_cliente é FK para cliente.id_cliente.
+
+Pet (1) → Prontuário (1)
+
+prontuario.id_pet é PK e FK para pet.id_pet.
+
+Veterinário (1) → Consulta (N)
+
+consulta.id_vet é FK para veterinario.id_vet.
+
+Pet (1) → Consulta (N)
+
+consulta.id_pet é FK para pet.id_pet.
+
+Consulta (1) → Exame (N)
+
+exame.id_consulta é FK para consulta.id_consulta.
+
+Consulta (N) ↔ Medicamento (N) por meio de Tratamento
+
+tratamento(id_consulta, id_medicamento) com chave primária composta e FKs para consulta e medicamento.
+
+Regras de Negócio e Operações Complementares
+
+Ao excluir um pet, o prontuário associado deve ser removido automaticamente (ON DELETE CASCADE), devido à dependência total.
+
+Ao excluir um medicamento, os tratamentos vinculados também devem ser removidos (ON DELETE CASCADE).
+
+Validações recomendadas na camada de serviço/controlador:
+
+Impedir criação de prontuário para pets inexistentes.
+
+Garantir coerência entre petId do payload e o recurso manipulado.
+
+Evitar duplicidade de prontuários (a PK já garante essa restrição).
+
+Operações adicionais sugeridas:
+
+Endpoint para consulta de prontuário por petId.
+
+Filtros por nome do pet ou por tutor.
+
+Relatórios, como número de consultas por veterinário em determinado período.
+
+4. Endpoints e Exemplos de Uso (API REST)
+
+Base da API: http://localhost:8080/api
+
+Pets
+
+GET /api/pets — retorna todos os pets.
+
+GET /api/pets/{id} — retorna um pet específico.
+
+POST /api/pets
+
 {
-  "nome": "Mimi",
-  "especie": "Gato",
-  "raca": "SRD",
-  "dataNascimento": "2022-11-02",
-  "idCliente": 2
+"nome": "Mimi",
+"especie": "Gato",
+"raca": "SRD",
+"dataNascimento": "2022-11-02",
+"idCliente": 2
 }
-```
-- `PUT /api/pets/{id}` — atualiza pet.
-- `DELETE /api/pets/{id}` — remove pet.
 
-### Prontuários
-- `GET /api/prontuarios` — lista todos os prontuários (com dados do pet e tutor).
-- `GET /api/prontuarios/{id}` — retorna prontuário (id = idPet).
-- `POST /api/prontuarios`
-```
+
+PUT /api/pets/{id} — atualiza dados do pet.
+
+DELETE /api/pets/{id} — exclui o pet.
+
+Prontuários
+
+GET /api/prontuarios — lista todos os prontuários (incluindo informações do pet e tutor).
+
+GET /api/prontuarios/{id} — retorna o prontuário correspondente ao pet (id = idPet).
+
+POST /api/prontuarios
+
 {
-  "petId": 2,
-  "observacoesGerais": "Histórico de dermatite"
+"petId": 2,
+"observacoesGerais": "Histórico de dermatite"
 }
-```
-- `PUT /api/prontuarios/{id}`
-```
+
+
+PUT /api/prontuarios/{id}
+
 {
-  "petId": 2,
-  "observacoesGerais": "Atualizado: sem sinais"
+"petId": 2,
+"observacoesGerais": "Atualizado: sem sinais"
 }
-```
-- `DELETE /api/prontuarios/{id}` — remove o prontuário (id = idPet).
 
-### Consulta / Exame / Tratamento / Medicamento
-Endpoints CRUD análogos, por exemplo:
-- `POST /api/consultas`
-- `GET /api/exames?consultaId=2`
-- `POST /api/tratamentos` (ou criar via nested resource ao salvar uma consulta)
 
----
+DELETE /api/prontuarios/{id} — exclui o prontuário do pet.
 
-## 5. Instruções de execução
+Consultas, Exames, Tratamentos e Medicamentos
 
-### Requisitos
-- Java 17+, Maven 3.8+, MySQL/MariaDB, Node.js (opcional para frontend).
+Endpoints CRUD seguem a mesma estrutura, por exemplo:
 
-### Configuração rápida
-1. Criar banco `clinica` (charset utf8mb4).
-2. Ajustar `src/main/resources/application.properties` com credenciais.
-3. Rodar:
-```bash
+POST /api/consultas
+
+GET /api/exames?consultaId=2
+
+POST /api/tratamentos (ou inclusão junto ao cadastro da consulta)
+
+5. Instruções de Execução
+   Requisitos
+
+Java 17+, Maven 3.8+, MySQL/MariaDB, Node.js (opcional para o frontend).
+
+Passo a passo
+
+Criar o banco de dados clinica com charset utf8mb4.
+
+Configurar credenciais no arquivo src/main/resources/application.properties.
+
+Executar:
+
 mvn clean package
 java -jar target/clinica-0.0.1-SNAPSHOT.jar
-```
-4. Frontend: abrir `index.html` ou servir via servidor estático (live-server).
 
----
 
-## 6. Estrutura do repositório e entrega
-Inclua na raiz do repositório:
-- Código-fonte do backend (`src/`).
-- Código-fonte do frontend (`src/main/resources/static` ou pasta `web`).
-- `README.md` (este arquivo).
-- `diagrama_logico.png` (arquivo com o diagrama).
-- arquivo SQL `clinica.sql` com a definição do esquema e dados de exemplo.
+Frontend: abrir index.html ou servir via servidor estático (ex.: live-server).
 
----
+6. Estrutura do Repositório
+
+A raiz do repositório deve conter:
+
+Código-fonte do backend (src/).
+
+Código-fonte do frontend (src/main/resources/static ou diretório web).
+
+Arquivo README.md.
+
+diagrama_logico.png (diagrama do banco).
+
+Arquivo SQL clinica.sql com definição do esquema e dados de exemplo.
