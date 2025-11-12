@@ -1,6 +1,11 @@
 # 🐾 Sistema de Gestão de Clínica Veterinária
 
-**Autores:** Ana Beatriz Santos Tolentino, Igor Souza Pureza, João Carlos Assis  
+**Autores:** Ana Beatriz Santos Tolentino, 
+Igor Souza Pureza, 
+João Carlos Assis,
+Gabriel Braulio,
+Giovanna Beatriz
+
 **Disciplina:** Desenvolvimento de Sistemas Web  
 **Data:** Novembro/2025
 
