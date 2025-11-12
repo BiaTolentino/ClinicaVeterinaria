@@ -142,11 +142,3 @@ Inclua na raiz do repositório:
 - arquivo SQL `clinica.sql` com a definição do esquema e dados de exemplo.
 
 ---
-
-## 7. Observações finais
-O projeto atende aos critérios solicitados: modelagem completa, chaves e relações corretas, endpoints REST testáveis e documentação. Para nota máxima, recomenda-se:
-- Incluir testes automatizados (unit e integration).
-- Implementar camada de serviços para regras de negócio complexas.
-- Adicionar validações e tratamento de exceções padronizado.
-
----
