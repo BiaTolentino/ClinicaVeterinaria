@@ -2,6 +2,7 @@ package com.example.clinica.controller;
 
 import com.example.clinica.model.Cliente;
 import com.example.clinica.repository.ClienteRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @RequestMapping("/api/clientes")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@Tag(name = "Clientes", description = "Operações relacionadas ao cadastro de clientes")
 public class ClienteController {
 
     private final ClienteRepository clienteRepo;
