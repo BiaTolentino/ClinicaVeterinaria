@@ -7,23 +7,31 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/tratamentos")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@Tag(name = "Tratamentos", description = "Gerenciamento de tratamentos aplicados aos pets")
 public class TratamentoController {
 
     private final TratamentoRepository tratamentoRepo;
 
     @GetMapping
+    @Operation(summary = "Listar todos os tratamentos", description = "Retorna todos os tratamentos com detalhes de consulta, pet e medicamento")
     public List<Map<String, Object>> listarTodos() {
         List<Tratamento> lista = tratamentoRepo.findAllWithDetails();
         return mapear(lista);
     }
 
     @GetMapping("/consulta/{idConsulta}")
+    @Operation(summary = "Listar tratamentos por consulta", description = "Retorna todos os tratamentos relacionados a uma consulta específica")
     public List<Map<String, Object>> listarPorConsulta(@PathVariable Long idConsulta) {
         List<Tratamento> lista = tratamentoRepo.findByConsultaWithDetails(idConsulta);
         return mapear(lista);
@@ -31,7 +39,6 @@ public class TratamentoController {
 
     private List<Map<String, Object>> mapear(List<Tratamento> lista) {
         List<Map<String, Object>> resultado = new ArrayList<>();
-
         for (Tratamento t : lista) {
             Map<String, Object> map = new LinkedHashMap<>();
             map.put("idConsulta", t.getConsulta() != null ? t.getConsulta().getIdConsulta() : null);
@@ -47,11 +54,15 @@ public class TratamentoController {
             map.put("motivo", t.getConsulta() != null ? t.getConsulta().getMotivo() : "—");
             resultado.add(map);
         }
-
         return resultado;
     }
 
     @PutMapping("/{consultaId}/{medicamentoId}")
+    @Operation(summary = "Atualizar tratamento", description = "Atualiza duração ou observações de um tratamento específico")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tratamento atualizado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Tratamento não encontrado")
+    })
     public ResponseEntity<?> atualizar(
             @PathVariable Long consultaId,
             @PathVariable Long medicamentoId,
@@ -75,6 +86,11 @@ public class TratamentoController {
     }
 
     @DeleteMapping("/{consultaId}/{medicamentoId}")
+    @Operation(summary = "Excluir tratamento", description = "Remove um tratamento de uma consulta")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Tratamento excluído com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Tratamento não encontrado")
+    })
     public ResponseEntity<?> excluir(@PathVariable Long consultaId, @PathVariable Long medicamentoId) {
         TratamentoId id = new TratamentoId(consultaId, medicamentoId);
         if (!tratamentoRepo.existsById(id)) return ResponseEntity.notFound().build();
