@@ -37,11 +37,51 @@
     </style>
 </head>
 <body>
+<script>
+    function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        window.location.href = "login.html";
+    }
+</script>
+
+<script type="module">
+    import { tryRefreshToken, listEntity } from './js/api.js';
+
+    (async () => {
+        let token = localStorage.getItem("token");
+
+        if (!token) {
+            const refreshed = await tryRefreshToken();
+            if (!refreshed) {
+                window.location.href = "login.html";
+                return;
+            }
+            token = localStorage.getItem("token");
+        }
+
+        // Agora você tem token válido → carregar dados
+        try {
+            const clientes = await listEntity('clientes');
+            console.log("Clientes:", clientes);
+
+            const veterinarios = await listEntity('veterinarios');
+            console.log("Veterinários:", veterinarios);
+        } catch (e) {
+            console.error("Erro ao carregar dados:", e);
+        }
+    })();
+</script>
+
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
     <div class="container-fluid px-4">
         <a class="navbar-brand fw-bold" href="index.html">🐾 Clínica Veterinária</a>
+
+        <button class="btn btn-light ms-auto" onclick="logout()">
+            <i class="bi bi-box-arrow-right"></i> Sair
+        </button>
     </div>
 </nav>
 
