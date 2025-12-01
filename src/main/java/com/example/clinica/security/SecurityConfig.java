@@ -31,6 +31,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",
+                                "/enviar-topico",
+                                "/enviar-fila",
+                                "/api/pets/mensagem-fila",
+                                "/api/pets/mensagem-topico",
                                 "/login.html",
                                 "/index.html",
                                 "/clientes.html",

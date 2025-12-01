@@ -33,7 +33,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         path.startsWith("/css/") ||
                         path.startsWith("/js/") ||
                         path.startsWith("/images/") ||
-                        path.startsWith("/api/auth/")
+                        path.startsWith("/api/auth/") ||
+                        path.equals("/enviar-fila") ||
+                        path.equals("/enviar-topico") ||
+                        path.equals("/api/pets/mensagem-fila") ||
+                        path.equals("/api/pets/mensagem-topico")
         ) {
             filterChain.doFilter(request, response);
             return;
