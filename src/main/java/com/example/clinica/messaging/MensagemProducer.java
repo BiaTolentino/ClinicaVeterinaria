@@ -13,13 +13,15 @@ public class MensagemProducer {
         this.jmsTemplate = jmsTemplate;
     }
 
-    // Envia mensagem para fila
+    // Envia mensagem para FILA
     public void enviarFilaNovoPaciente(String mensagem) {
         jmsTemplate.convertAndSend(ActiveMQConfig.QUEUE_NOVO_PACIENTE, mensagem);
+        System.out.println("[PRODUCER] Enviado para FILA: " + mensagem);
     }
 
-    // Envia mensagem para tópico
+    // Envia mensagem para TÓPICO
     public void enviarTopicoEventoPaciente(String mensagem) {
         jmsTemplate.convertAndSend(ActiveMQConfig.TOPICO_EVENTOS_PACIENTE, mensagem);
+        System.out.println("[PRODUCER] Enviado para TÓPICO: " + mensagem);
     }
 }

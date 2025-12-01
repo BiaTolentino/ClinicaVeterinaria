@@ -37,7 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         path.equals("/enviar-fila") ||
                         path.equals("/enviar-topico") ||
                         path.equals("/api/pets/mensagem-fila") ||
-                        path.equals("/api/pets/mensagem-topico")
+                        path.equals("/api/pets/mensagem-topico") ||
+                        path.startsWith("/swagger-ui/") ||
+                        path.equals("/swagger-ui.html") ||
+                        path.startsWith("/v3/api-docs") ||
+                        path.startsWith("/api-docs")
         ) {
             filterChain.doFilter(request, response);
             return;

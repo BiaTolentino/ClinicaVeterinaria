@@ -10,7 +10,7 @@ import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 @EnableJms
 public class ActiveMQConfig {
 
-    public static final String QUEUE_NOVO_PACIENTE = "fila.novo.paciente"; // <--- Adicione isto
+    public static final String QUEUE_NOVO_PACIENTE = "fila.novo.paciente";
     public static final String TOPICO_EVENTOS_PACIENTE = "topico.eventos.paciente";
 
     @Bean
@@ -22,19 +22,21 @@ public class ActiveMQConfig {
         return factory;
     }
 
+    // Listener de FILA
     @Bean
     public DefaultJmsListenerContainerFactory queueListenerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
-        factory.setPubSubDomain(false); // false = Queue
+        factory.setPubSubDomain(false); // QUEUE
         return factory;
     }
 
+    // Listener de TÓPICO
     @Bean
     public DefaultJmsListenerContainerFactory topicListenerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
-        factory.setPubSubDomain(true); // true = Topic
+        factory.setPubSubDomain(true); // TOPIC
         return factory;
     }
 }

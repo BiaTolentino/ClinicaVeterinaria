@@ -9,6 +9,6 @@ public class PetTopicoListener {
 
     @JmsListener(destination = ActiveMQConfig.TOPICO_EVENTOS_PACIENTE, containerFactory = "topicListenerFactory")
     public void receberMensagem(String mensagem) {
-        System.out.println("[Tópico] Recebido: " + mensagem);
+        System.out.println("[TÓPICO] Listener A recebeu: " + mensagem);
     }
 }

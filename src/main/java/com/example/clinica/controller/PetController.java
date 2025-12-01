@@ -59,20 +59,21 @@ public class PetController {
             @ApiResponse(responseCode = "200", description = "Pet cadastrado com sucesso")
     })
     public ResponseEntity<Pet> create(@RequestBody Pet pet) {
-        // vincula cliente se necessário
+
         if (pet.getCliente() == null && pet.getIdCliente() != null) {
             clienteRepo.findById(pet.getIdCliente()).ifPresent(pet::setCliente);
         }
 
         Pet saved = petRepo.save(pet);
 
-        // 🔹 Mensageria
         String msg = "Novo pet cadastrado: " + saved.getNome() + " (ID: " + saved.getIdPet() + ")";
-        mensagemProducer.enviarFilaNovoPaciente(msg);          // envia para a fila
-        mensagemProducer.enviarTopicoEventoPaciente(msg);     // envia para o tópico
+
+        mensagemProducer.enviarFilaNovoPaciente(msg);      // FILA
+        mensagemProducer.enviarTopicoEventoPaciente(msg);  // TÓPICO
 
         return ResponseEntity.ok(saved);
     }
+
 
     // -----------------------------------------
     // PUT /api/pets/{id} → atualiza pet
